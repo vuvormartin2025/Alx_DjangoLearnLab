@@ -51,3 +51,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('relationship_app.urls')),
 ]
+
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('admin-view/', views.admin_view, name='admin_view'),
+]
