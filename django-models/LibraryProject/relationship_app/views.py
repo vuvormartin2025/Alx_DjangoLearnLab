@@ -17,7 +17,7 @@ class LibraryDetailView(DetailView):
     template_name = "relationship_app/library_detail.html"
     context_object_name = "library"
 
-    from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import RegisterForm
@@ -59,20 +59,12 @@ def home_view(request):
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
-from .models import UserProfile
 
-# ✅ Check role helpers
+# helper check
 def is_admin(user):
     return hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
 
-def is_librarian(user):
-    return hasattr(user, 'userprofile') and user.userprofile.role == 'Librarian'
-
-def is_member(user):
-    return hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
-
-
-# ✅ Role-based views
+# ✅ Admin-only view
 @user_passes_test(is_admin)
 def admin_view(request):
     return render(request, 'admin_view.html')
@@ -87,14 +79,3 @@ def librarian_view(request):
 def member_view(request):
     return render(request, 'member_view.html')
 
-from django.shortcuts import render
-from django.contrib.auth.decorators import user_passes_test
-
-# helper check
-def is_admin(user):
-    return hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
-
-# ✅ Admin-only view
-@user_passes_test(is_admin)
-def admin_view(request):
-    return render(request, 'admin_view.html')

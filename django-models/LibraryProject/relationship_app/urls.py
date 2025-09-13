@@ -43,18 +43,3 @@ urlpatterns = [
     path('librarian-view/', views.librarian_view, name='librarian_view'),
     path('member-view/', views.member_view, name='member_view'),
 ]
-
-from django.contrib import admin
-from django.urls import path, include
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('relationship_app.urls')),
-]
-
-from django.urls import path
-from . import views
-
-urlpatterns = [
-    path('admin-view/', views.admin_view, name='admin_view'),
-]
