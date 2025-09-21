@@ -135,3 +135,75 @@ AUTH_USER_MODEL = "bookshelf.CustomUser"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+
+# settings.py (add or update these entries)
+import os
+
+# --- Basic security ---
+DEBUG = False  # MUST be False in production
+# Set ALLOWED_HOSTS for your production domains
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
+
+# Enforce HTTPS (set to True in production with SSL termination)
+SECURE_SSL_REDIRECT = True
+
+# Session & CSRF cookies sent only over HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Prevent browsers from guessing content types
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable XSS filter in supported browsers
+SECURE_BROWSER_XSS_FILTER = True
+
+# Prevent site from being framed (clickjacking protection)
+X_FRAME_OPTIONS = "DENY"
+
+# HSTS — only enable after verifying HTTPS works
+# Start with a short time while testing, then increase
+SECURE_HSTS_SECONDS = int(os.getenv("SECURE_HSTS_SECONDS", 60))  # e.g. 31536000 in mature prod
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# X-Content-Security-Policy — use CSP to mitigate XSS (see below)
+# Option A: Use django-csp (recommended)
+#   pip install django-csp
+# and add 'csp' to INSTALLED_APPS and 'csp.middleware.CSPMiddleware' to MIDDLEWARE
+# Example CSP policy (tune for your app)
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'")   # remove 'unsafe-inline' if you can avoid inline scripts
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")    # prefer external stylesheets
+CSP_IMG_SRC = ("'self'", "data:")
+CSP_FONT_SRC = ("'self'", "data:")
+CSP_CONNECT_SRC = ("'self'",)
+CSP_FRAME_ANCESTORS = ("'none'",)
+
+# Content Security Policy reporting (optional)
+#CSP_REPORT_URI = "/csp-report-endpoint/"
+
+# --- Logging for security-relevant events ---
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {'class': 'logging.StreamHandler',},
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': os.getenv('DJANGO_LOG_LEVEL', 'WARNING'),
+    },
+}
+
+MIDDLEWARE = [
+    # ...
+    'django.middleware.security.SecurityMiddleware',
+    # If using django-csp, use its middleware instead:
+    # 'csp.middleware.CSPMiddleware',
+    # If using the manual middleware:
+    'LibraryProject.middleware.ContentSecurityPolicyMiddleware',
+    # ...
+    'django.middleware.csrf.CsrfViewMiddleware',
+    # ...
+]
