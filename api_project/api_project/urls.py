@@ -20,3 +20,21 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
+
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/', include('api.urls')),  # Connect api app
+]
+
+from django.contrib import admin
+from django.urls import path, include
+from api.views import home
+
+urlpatterns = [
+    path('', home, name='home'),  # root page
+    path('admin/', admin.site.urls),
+    path('api/', include('api.urls')),
+]
