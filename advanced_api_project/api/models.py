@@ -2,7 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-
 class Author(models.Model):
     """
     Author model stores basic author information.
