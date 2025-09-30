@@ -49,3 +49,11 @@ urlpatterns = [
     path('api/', include('bookshelf.urls')),  # or wherever your app urls are
     path('api/token/', obtain_auth_token, name='api_token_auth'),  # login to get token
 ]
+
+from django.urls import path
+from .views import BookListCreateView, BookDetailView
+
+urlpatterns = [
+    path('books/', BookListCreateView.as_view(), name='book-list-create'),
+    path('books/<int:pk>/', BookDetailView.as_view(), name='book-detail'),
+]
