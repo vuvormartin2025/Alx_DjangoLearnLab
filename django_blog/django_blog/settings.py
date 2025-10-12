@@ -148,3 +148,22 @@ TEMPLATES = [
         },
     },
 ]
+
+# at top if not present
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# auth redirect
+LOGIN_REDIRECT_URL = 'home'           # change to your home view name or 'profile'
+LOGOUT_REDIRECT_URL = 'home'          # where to go after logout
+
+# messages framework already enabled by default; ensure 'django.contrib.messages' in INSTALLED_APPS
+
+# Static setup (you likely already have)
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'blog/static')]
+
+# Media (for avatar uploads)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

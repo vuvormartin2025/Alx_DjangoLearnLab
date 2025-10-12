@@ -7,10 +7,6 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views
 from .forms import UserRegisterForm, ProfileForm
-from django.shortcuts import render
-
-def home(request):
-    return render(request, 'blog/home.html')  # Make sure this template exists
 
 def register(request):
     if request.method == 'POST':
