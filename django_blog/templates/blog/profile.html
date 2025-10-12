@@ -1,0 +1,17 @@
+<!-- blog/templates/blog/profile.html -->
+{% extends 'blog/base.html' %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+  <h2>Profile for {{ request.user.username }}</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ pform.as_p }}
+    <button type="submit">Save profile</button>
+  </form>
+
+  <h3>Account info</h3>
+  <ul>
+    <li>Username: {{ request.user.username }}</li>
+    <li>Email: {{ request.user.email }}</li>
+  </ul>
+{% endblock %}
