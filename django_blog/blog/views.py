@@ -138,3 +138,33 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         return self.request.user == self.get_object().author
+    
+# blog/views.py
+from django.shortcuts import render
+from django.db.models import Q
+from .models import Post
+
+def search_posts(request):
+    query = request.GET.get('q')
+    results = Post.objects.none()
+    if query:
+        results = Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags_name_icontains=query)
+        ).distinct()
+    return render(request, 'blog/search_results.html', {'results': results, 'query': query})
+
+from taggit.models import Tag
+
+def posts_by_tag(request, tag_name):
+    posts = Post.objects.filter(tags_name_iexact=tag_name)
+    return render(request, 'blog/posts_by_tag.html', {'posts': posts, 'tag_name': tag_name})
+
+# blog/views.py
+from django.shortcuts import render, get_object_or_404
+from .models import Post
+
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    return render(request, 'blog/post_detail.html', {'post': post})

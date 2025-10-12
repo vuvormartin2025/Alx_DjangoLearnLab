@@ -1,0 +1,11 @@
+<!-- blog/templates/blog/posts_by_tag.html -->
+<h1>Posts tagged with "{{ tag_name }}"</h1>
+{% if posts %}
+    <ul>
+    {% for post in posts %}
+        <li><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No posts found for this tag.</p>
+{% endif %}

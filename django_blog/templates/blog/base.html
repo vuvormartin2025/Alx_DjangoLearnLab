@@ -33,3 +33,8 @@
   </main>
 </body>
 </html>
+
+<form method="get" action="{% url 'search_posts' %}">
+    <input type="text" name="q" placeholder="Search posts..." required>
+    <button type="submit">Search</button>
+</form>
