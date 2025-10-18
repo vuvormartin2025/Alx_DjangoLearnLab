@@ -175,3 +175,15 @@ DATABASES = {
         conn_max_age=600
     )
 }
+
+# Prevent your site from being framed to avoid clickjacking
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent content sniffing by browsers
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable XSS protection in browsers
+SECURE_BROWSER_XSS_FILTER = True
+
+# Redirect all HTTP requests to HTTPS
+SECURE_SSL_REDIRECT = True
