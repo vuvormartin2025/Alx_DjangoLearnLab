@@ -141,3 +141,37 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 5,
 }
+
+
+# Disable debug
+DEBUG = False
+
+# Add your production domain or IP
+ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com', 'your-app.herokuapp.com']
+
+# Security settings
+SECURE_SSL_REDIRECT = True  # Redirect HTTP → HTTPS
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Static files
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'mediafiles'
+
+# Database: Example for PostgreSQL in production
+import dj_database_url
+DATABASES = {
+    'default': dj_database_url.config(
+        default='postgres://USER:PASSWORD@HOST:PORT/DBNAME',
+        conn_max_age=600
+    )
+}
