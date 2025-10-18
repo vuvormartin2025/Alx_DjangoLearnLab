@@ -29,3 +29,14 @@ class PostSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         validated_data['author'] = request.user
         return super().create(validated_data)
+    
+from rest_framework import serializers
+from .models import Like, Post
+
+class LikeSerializer(serializers.ModelSerializer):
+    user_username = serializers.CharField(source='user.username', read_only=True)
+
+    class Meta:
+        model = Like
+        fields = ['id', 'user', 'user_username', 'post', 'created_at']
+        read_only_fields = ['user', 'created_at']
