@@ -1,3 +1,4 @@
+# accounts/models.py
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
@@ -11,14 +12,16 @@ class User(AbstractUser):
         blank=True,
         null=True
     )
-    followers = models.ManyToManyField(
+
+    # Users this user follows (directional). Reverse name -> .followers
+    following = models.ManyToManyField(
         'self',
         symmetrical=False,
-        related_name='following',
+        related_name='followers',
         blank=True
     )
 
-    # Add these to avoid clashes
+    # Avoid reverse accessor clashes with the default auth models
     groups = models.ManyToManyField(
         Group,
         related_name='accounts_user_set',
@@ -34,5 +37,17 @@ class User(AbstractUser):
         verbose_name='user permissions'
     )
 
-    def __str__(self):
+    def _str_(self):
         return self.username
+
+    # convenience methods
+    def follow(self, other_user):
+        if other_user and other_user != self:
+            self.following.add(other_user)
+
+    def unfollow(self, other_user):
+        if other_user and other_user != self:
+            self.following.remove(other_user)
+
+    def is_following(self, other_user):
+        return self.following.filter(pk=other_user.pk).exists()
